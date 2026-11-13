@@ -65,6 +65,31 @@ TechnoExt::~TechnoExt()
 		ScenarioExt::Global()->FallingDownTracker.Remove(pThis);
 }
 
+ArmorType TechnoExt::GetArmorType(TechnoClass* pThis, TechnoTypeClass* pType)
+{
+	if (!pThis)
+		return pType ? pType->Armor : Armor::None;
+
+	if (!pType)
+		pType = pThis->GetTechnoType();
+
+	if (!pType)
+		return Armor::None;
+
+	if (pType->Gunner)
+	{
+		const auto pTypeExt = TechnoTypeExt::Fetch(pType);
+		const int weaponIndex = pThis->CurrentWeaponNumber;
+		if (weaponIndex >= 0 && static_cast<size_t>(weaponIndex) < pTypeExt->Gunner_Armors.size())
+		{
+			if (pTypeExt->Gunner_Armors[weaponIndex].isset())
+				return pTypeExt->Gunner_Armors[weaponIndex].Get();
+		}
+	}
+
+	return pType->Armor;
+}
+
 bool TechnoExt::IsActive(TechnoClass* pThis)
 {
 	return pThis

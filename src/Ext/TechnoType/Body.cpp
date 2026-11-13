@@ -8,7 +8,7 @@
 #include <Ext/Foot/Body.h>
 #include <Ext/UnitType/Body.h>
 #include <Ext/WeaponType/Body.h>
-
+#include <Ext/TechnoType/Body.h>
 #include <Utilities/AresHelper.h>
 
 namespace
@@ -772,11 +772,15 @@ void TechnoTypeExt::LoadFromINIFile(CCINIClass* const pINI)
 	if (pThis->Gunner)
 	{
 		this->WeaponGroupAs.resize(pThis->WeaponCount);
+		this->Gunner_Armors.resize(pThis->WeaponCount);
 
 		for (int idx = 0; idx < pThis->WeaponCount; ++idx)
 		{
 			_snprintf_s(tempBuffer, sizeof(tempBuffer), "WeaponGroupAs%d", idx + 1);
 			this->WeaponGroupAs[idx].Read(pINI, pSection, tempBuffer);
+
+			_snprintf_s(tempBuffer, sizeof(tempBuffer), "Armor%d", idx + 1);
+			this->Gunner_Armors[idx].Read(exINI, pSection, tempBuffer);
 		}
 	}
 
@@ -1483,6 +1487,7 @@ void TechnoTypeExt::Serialize(T& Stm)
 		.Process(this->InterceptorType)
 
 		.Process(this->WeaponGroupAs)
+		.Process(this->Gunner_Armors)
 		.Process(this->RadarJamHouses)
 		.Process(this->RadarJamDelay)
 		.Process(this->RadarJamAffect)

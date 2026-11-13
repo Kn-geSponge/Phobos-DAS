@@ -49,6 +49,7 @@ public:
 	ValueableVector<TechnoTypeClass*> DeployForbidTypes;
 	std::vector<PhobosFixedString<0x20>> WeaponGroupAs;
 	Nullable<AffectedHouse> RadarJamHouses;
+	std::vector<Nullable<ArmorType>> Gunner_Armors;
 	Nullable<int> RadarJamDelay;
 	ValueableVector<BuildingTypeClass*> RadarJamAffect;
 	ValueableVector<BuildingTypeClass*> RadarJamIgnore;
@@ -566,6 +567,7 @@ public:
 		, DeployForbidTypes {}
 		, WeaponGroupAs {}
 		, RadarJamHouses {}
+		, Gunner_Armors {}
 		, RadarJamDelay {}
 		, RadarJamAffect {}
 		, RadarJamIgnore {}

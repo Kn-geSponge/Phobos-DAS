@@ -220,7 +220,7 @@ public:
 
 	static bool LoadGlobals(PhobosStreamReader& Stm);
 	static bool SaveGlobals(PhobosStreamWriter& Stm);
-
+	static ArmorType GetArmorType(TechnoClass* pThis, TechnoTypeClass* pType = nullptr);
 	static bool IsActive(TechnoClass* pThis);
 
 	static bool IsHarvesting(TechnoClass* pThis);

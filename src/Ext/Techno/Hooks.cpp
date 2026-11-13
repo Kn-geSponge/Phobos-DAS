@@ -510,6 +510,16 @@ DEFINE_HOOK(0x708AEB, TechnoClass_ReplaceArmorWithShields, 0x6) //TechnoClass_Sh
 				return R->Origin() + 6;
 			}
 		}
+
+		if (const auto pTechnoTarget = abstract_cast<TechnoClass*>(pTarget))
+		{
+			const auto armor = TechnoExt::GetArmorType(pTechnoTarget);
+			if (armor != pTechnoTarget->GetTechnoType()->Armor)
+			{
+				R->EAX(armor);
+				return R->Origin() + 6;
+			}
+		}
 	}
 
 	return 0;
@@ -598,9 +608,17 @@ DEFINE_HOOK(0x6FDC87, TechnoClass_AdjustDamage_ArmorMultiplier, 0x6)
 DEFINE_HOOK(0x701966, TechnoClass_ReceiveDamage_ArmorMultiplier, 0x6)
 {
 	GET(TechnoClass*, pThis, ESI);
-	GET(const int, damage, EAX);
+	GET(int, damage, EAX);
 	GET_STACK(HouseClass*, pSourceHouse, STACK_OFFSET(0xC4, 0x1C));
 	GET_STACK(WarheadTypeClass*, pWarhead, STACK_OFFSET(0xC4, 0xC));
+
+	const auto customArmor = TechnoExt::GetArmorType(pThis);
+	if (customArmor != pThis->GetTechnoType()->Armor)
+	{
+		GET_STACK(int*, pDamage, STACK_OFFSET(0xC4, 0x4));
+		GET_STACK(int, distance, STACK_OFFSET(0xC4, 0x8));
+		damage = MapClass::GetTotalDamage(*pDamage, pWarhead, customArmor, distance);
+	}
 
 	R->EAX(static_cast<int>(damage / TechnoExt::CalculateArmorMultipliers(pThis, pWarhead, pSourceHouse, true)));
 
