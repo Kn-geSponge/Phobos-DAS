@@ -44,6 +44,34 @@ bool WeaponTypeExt::HasRequiredAttachedEffects(TechnoClass* pTarget, TechnoClass
 	return true;
 }
 
+bool WeaponTypeExt::CanTargetArmor(AbstractClass* pTarget) const
+{
+	// Если список пуст — ограничений по броне нет
+	if (this->TargetArmor.size() == 0)
+		return true;
+
+	// Если оружие ограничено типами брони, пустую землю атаковать нельзя
+	auto pTechnoTarget = generic_cast<TechnoClass*>(pTarget);
+	if (!pTechnoTarget)
+		return false;
+
+	Armor targetArmor = Armor::None;
+
+	// Учитываем щиты Phobos (Shields)
+	auto const pTargetExt = TechnoExt::Fetch(pTechnoTarget);
+	if (pTargetExt && pTargetExt->Shield && pTargetExt->Shield->IsActive())
+	{
+		if (auto pShieldType = pTargetExt->Shield->GetType())
+			targetArmor = pShieldType->Armor;
+	}
+	else
+	{
+		targetArmor = pTechnoTarget->GetArmorType();
+	}
+
+	return this->TargetArmor.Contains(targetArmor);
+}
+
 bool WeaponTypeExt::IsHealthInThreshold(TechnoClass* pTarget) const
 {
 	return TechnoExt::IsHealthInThreshold(pTarget, this->CanTarget_MinHealth, this->CanTarget_MaxHealth);
@@ -112,6 +140,9 @@ void WeaponTypeExt::LoadFromINIFile(CCINIClass* const pINI)
 	this->Strafing_EndDelay.Read(exINI, pSection, "Strafing.EndDelay");
 	this->CanTarget.Read(exINI, pSection, "CanTarget");
 	this->CanTargetHouses.Read(exINI, pSection, "CanTargetHouses");
+
+	this->TargetArmor.Read(exINI, pSection, "TargetArmor"); // <--- New Target Armor
+
 	this->CanTarget_MaxHealth.Read(exINI, pSection, "CanTarget.MaxHealth");
 	this->CanTarget_MinHealth.Read(exINI, pSection, "CanTarget.MinHealth");
 	this->CanTargetVeterancy.Read(exINI, pSection, "CanTargetVeterancy");
@@ -223,6 +254,7 @@ void WeaponTypeExt::LoadFromINIFile(CCINIClass* const pINI)
 
 	// handle SkipWeaponPicking
 	if (this->CanTarget != AffectedTarget::All || this->CanTargetHouses != AffectedHouse::All
+		|| this->TargetArmor.size() > 0 // <--- ДОБАВИТЬ ЭТУ ПРОВЕРКУ
 		|| this->CanTarget_MaxHealth < 1.0 || this->CanTarget_MinHealth > 0.0
 		|| this->CanTargetVeterancy != AffectedVeterancy::All
 		|| this->AttachEffect_RequiredTypes.size() || this->AttachEffect_RequiredGroups.size()
@@ -259,6 +291,7 @@ void WeaponTypeExt::Serialize(T& Stm)
 		.Process(this->Strafing_EndDelay)
 		.Process(this->CanTarget)
 		.Process(this->CanTargetHouses)
+		.Process(this->TargetArmor) // <--- ДОБАВИТЬ СЮДА
 		.Process(this->CanTarget_MaxHealth)
 		.Process(this->CanTarget_MinHealth)
 		.Process(this->CanTargetVeterancy)

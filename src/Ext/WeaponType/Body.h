@@ -23,7 +23,6 @@ public:
 	{
 		return static_cast<WeaponTypeClass*>(this->GetAttachedObject());
 	}
-
 	Valueable<double> DiskLaser_Radius;
 	Valueable<Leptons> ProjectileRange;
 	Nullable<bool> ProjectileRange_ApplyModifiers;
@@ -118,6 +117,8 @@ public:
 	Nullable<bool> AttackFriendlies;
 	Nullable<bool> AttackCursorOnFriendlies;
 	Nullable<bool> AttackNoThreatBuildings;
+
+    ValueableVector<Armor> TargetArmor {};
 
 	Nullable<bool> Anim_Update;
 
