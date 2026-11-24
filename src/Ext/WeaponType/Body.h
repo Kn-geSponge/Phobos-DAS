@@ -124,6 +124,8 @@ public:
 
 	bool SkipWeaponPicking;
 
+	
+
 	Nullable<bool> CylinderRangefinding;
 
 	Valueable<bool> Abductor_ChangeOwner_ResetDriverKilled;
@@ -237,6 +239,7 @@ public:
 	bool HasRequiredAttachedEffects(TechnoClass* pTechno, TechnoClass* pFirer) const;
 	bool IsHealthInThreshold(TechnoClass* pTarget) const;
 	bool IsVeterancyInThreshold(TechnoClass* pTarget) const;
+	bool CanTargetArmor(AbstractClass* pTarget) const;
 
 	virtual ~WeaponTypeExt() = default;
 
