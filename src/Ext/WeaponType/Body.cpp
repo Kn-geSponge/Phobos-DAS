@@ -112,7 +112,10 @@ void WeaponTypeExt::LoadFromINIFile(CCINIClass* const pINI)
 	this->Strafing_EndDelay.Read(exINI, pSection, "Strafing.EndDelay");
 
 	this->TargetArmor.Read(exINI, pSection, "TargetArmor");
-	this->TargetingWarhead.Read(exINI, pSection, "TargetingWarhead");
+	if (exINI.ReadString(pSection, "TargetingWarhead"))
+	{
+		this->TargetingWarhead = WarheadTypeClass::FindOrAllocate(exINI.value());
+	}
 
 	this->CanTarget.Read(exINI, pSection, "CanTarget");
 	this->CanTargetHouses.Read(exINI, pSection, "CanTargetHouses");
