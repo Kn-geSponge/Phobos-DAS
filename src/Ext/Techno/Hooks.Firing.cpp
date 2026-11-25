@@ -405,6 +405,26 @@ DEFINE_HOOK(0x6FC339, TechnoClass_CanFire, 0x6)
 		}
 	}
 
+	if (!pWeaponExt->TargetArmor.empty())
+	{
+		// Если задано ограничение по броне, нельзя стрелять по клеткам земли/пустоте
+		if (!pTargetTechno)
+			return CannotFire;
+
+		auto targetArmor = TechnoExt::GetArmorType(pTargetTechno);
+		if (const auto pTargetExt = TechnoExt::Fetch(pTargetTechno))
+		{
+			if (const auto pShield = pTargetExt->Shield.get())
+			{
+				if (pShield->IsActive() && !pShield->CanBePenetrated(pWeapon->Warhead))
+					targetArmor = pShield->GetArmorType();
+			}
+		}
+
+		if (!pWeaponExt->TargetArmor.Contains(targetArmor))
+			return CannotFire;
+	}
+	
 	if (pTargetTechno)
 	{
 		if (pTargetTechno->IsIronCurtained()

@@ -42,7 +42,6 @@ int TechnoExt::PickWeaponIndex(TechnoClass* pThis, TechnoClass* pTargetTechno, A
 				|| !pSecondExt->IsHealthInThreshold(pTargetTechno)
 				|| !pSecondExt->IsVeterancyInThreshold(pTargetTechno)
 				|| !pSecondExt->HasRequiredAttachedEffects(pTargetTechno, pThis)
-				|| !pSecondExt->CanTargetArmor(pTargetTechno) // <--- ДОБАВИТЬ ЭТУ СТРОКУ
 				|| (!pSecondExt->CanTarget_DriverKilled && TechnoExt::DriverKilled(pTargetTechno)))
 			{
 				return weaponIndexOne;
@@ -72,7 +71,6 @@ int TechnoExt::PickWeaponIndex(TechnoClass* pThis, TechnoClass* pTargetTechno, A
 		{
 			if (!EnumFunctions::IsTechnoEligible(pTargetTechno, pFirstExt->CanTarget)
 				|| !EnumFunctions::CanTargetHouse(pFirstExt->CanTargetHouses, pThis->Owner, pTargetTechno->Owner)
-				|| !pFirstExt->CanTargetArmor(pTargetTechno) // <--- ДОБАВИТЬ ЭТУ СТРОКУ
 				|| !pFirstExt->IsHealthInThreshold(pTargetTechno)
 				|| !pFirstExt->IsVeterancyInThreshold(pTargetTechno)
 				|| !firstAllowedAE

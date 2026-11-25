@@ -23,6 +23,7 @@ public:
 	{
 		return static_cast<WeaponTypeClass*>(this->GetAttachedObject());
 	}
+
 	Valueable<double> DiskLaser_Radius;
 	Valueable<Leptons> ProjectileRange;
 	Nullable<bool> ProjectileRange_ApplyModifiers;
@@ -40,6 +41,7 @@ public:
 	Nullable<bool> Strafing_UseAmmoPerShot;
 	Nullable<bool> Strafing_TargetCell;
 	Nullable<int> Strafing_EndDelay;
+	ValueableVector<ArmorType> TargetArmor;
 	Valueable<AffectedTarget> CanTarget;
 	Valueable<AffectedHouse> CanTargetHouses;
 	Valueable<double> CanTarget_MaxHealth;
@@ -118,13 +120,9 @@ public:
 	Nullable<bool> AttackCursorOnFriendlies;
 	Nullable<bool> AttackNoThreatBuildings;
 
-    ValueableVector<Armor> TargetArmor {};
-
 	Nullable<bool> Anim_Update;
 
 	bool SkipWeaponPicking;
-
-	
 
 	Nullable<bool> CylinderRangefinding;
 
@@ -239,7 +237,6 @@ public:
 	bool HasRequiredAttachedEffects(TechnoClass* pTechno, TechnoClass* pFirer) const;
 	bool IsHealthInThreshold(TechnoClass* pTarget) const;
 	bool IsVeterancyInThreshold(TechnoClass* pTarget) const;
-	bool CanTargetArmor(AbstractClass* pTarget) const;
 
 	virtual ~WeaponTypeExt() = default;
 
