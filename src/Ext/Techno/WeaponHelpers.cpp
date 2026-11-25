@@ -61,6 +61,8 @@ int TechnoExt::PickWeaponIndex(TechnoClass* pThis, TechnoClass* pTargetTechno, A
 
 				if (static_cast<int>(targetArmor) != static_cast<int>(pSecondExt->TargetArmor.Get()))
 					return weaponIndexOne;
+				else if (!pFirstExt->TargetArmor.isset())
+					return weaponIndexTwo; // <--- ВОТ ЭТА СТРОЧКА!
 			}
 		}
 	}
