@@ -46,8 +46,25 @@ int TechnoExt::PickWeaponIndex(TechnoClass* pThis, TechnoClass* pTargetTechno, A
 			{
 				return weaponIndexOne;
 			}
+
+			if (pSecondExt->TargetArmor.isset())
+			{
+				auto targetArmor = TechnoExt::GetArmorType(pTargetTechno);
+				if (const auto pTargetExt = TechnoExt::Fetch(pTargetTechno))
+				{
+					if (const auto pShield = pTargetExt->Shield.get())
+					{
+						if (pShield->IsActive() && !pShield->CanBePenetrated(pWeaponTwo->Warhead))
+							targetArmor = pShield->GetArmorType();
+					}
+				}
+
+				if (static_cast<int>(targetArmor) != static_cast<int>(pSecondExt->TargetArmor.Get()))
+					return weaponIndexOne;
+			}
 		}
 	}
+
 
 	const bool secondIsAA = pTargetTechno && pTargetTechno->IsInAir() && pWeaponTwo->Projectile->AA;
 	auto const pFirstExt = WeaponTypeExt::Fetch(pWeaponStructOne->WeaponType);
@@ -77,6 +94,22 @@ int TechnoExt::PickWeaponIndex(TechnoClass* pThis, TechnoClass* pTargetTechno, A
 				|| (!pFirstExt->CanTarget_DriverKilled && TechnoExt::DriverKilled(pTargetTechno)))
 			{
 				return weaponIndexTwo;
+			}
+
+			if (pFirstExt->TargetArmor.isset())
+			{
+				auto targetArmor = TechnoExt::GetArmorType(pTargetTechno);
+				if (const auto pTargetExt = TechnoExt::Fetch(pTargetTechno))
+				{
+					if (const auto pShield = pTargetExt->Shield.get())
+					{
+						if (pShield->IsActive() && !pShield->CanBePenetrated(pWeaponStructOne->WeaponType->Warhead))
+							targetArmor = pShield->GetArmorType();
+					}
+				}
+
+				if (static_cast<int>(targetArmor) != static_cast<int>(pFirstExt->TargetArmor.Get()))
+					return weaponIndexTwo;
 			}
 		}
 	}
