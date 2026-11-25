@@ -74,16 +74,6 @@ public:
 		return *this;
 	}
 
-	bool operator==(const ArmorType& other) const noexcept
-	{
-		return this->value == other.value;
-	}
-
-	bool operator!=(const ArmorType& other) const noexcept
-	{
-		return this->value != other.value;
-	}
-
 	operator Armor() const { return  (Armor)this->value; }
 	operator int() const { return this->value; }
 

@@ -421,10 +421,23 @@ DEFINE_HOOK(0x6FC339, TechnoClass_CanFire, 0x6)
 			}
 		}
 
-		if (!pWeaponExt->TargetArmor.Contains(targetArmor))
+		// Проверяем, есть ли броня цели в списке разрешённых (сравниваем через явный int)
+		const int targetArmorInt = static_cast<int>(targetArmor);
+		bool armorFound = false;
+
+		for (const auto& allowedArmor : pWeaponExt->TargetArmor)
+		{
+			if (static_cast<int>(allowedArmor) == targetArmorInt)
+			{
+				armorFound = true;
+				break;
+			}
+		}
+
+		if (!armorFound)
 			return CannotFire;
 	}
-	
+
 	if (pTargetTechno)
 	{
 		if (pTargetTechno->IsIronCurtained()
