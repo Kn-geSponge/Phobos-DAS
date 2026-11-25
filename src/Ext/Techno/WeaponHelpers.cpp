@@ -19,6 +19,9 @@ int TechnoExt::PickWeaponIndex(TechnoClass* pThis, TechnoClass* pTargetTechno, A
 	auto const pWeaponTwo = pWeaponStructTwo->WeaponType;
 	auto const pSecondExt = WeaponTypeExt::Fetch(pWeaponTwo);
 
+	auto const pWeaponOne = pWeaponStructOne->WeaponType;
+	auto const pFirstExt = WeaponTypeExt::Fetch(pWeaponOne);
+
 	CellClass* pTargetCell = nullptr;
 
 	// Ignore target cell for airborne target technos.
@@ -80,7 +83,7 @@ int TechnoExt::PickWeaponIndex(TechnoClass* pThis, TechnoClass* pTargetTechno, A
 
 
 	const bool secondIsAA = pTargetTechno && pTargetTechno->IsInAir() && pWeaponTwo->Projectile->AA;
-	auto const pFirstExt = WeaponTypeExt::Fetch(pWeaponStructOne->WeaponType);
+	///auto const pFirstExt = WeaponTypeExt::Fetch(pWeaponStructOne->WeaponType); // (уже объявлен выше)
 	const bool skipPrimaryPicking = pFirstExt->SkipWeaponPicking;
 	const bool firstAllowedAE = skipPrimaryPicking || pFirstExt->HasRequiredAttachedEffects(pTargetTechno, pThis);
 
