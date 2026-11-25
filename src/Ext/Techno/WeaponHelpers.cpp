@@ -71,7 +71,7 @@ int TechnoExt::PickWeaponIndex(TechnoClass* pThis, TechnoClass* pTargetTechno, A
 			if (pSecondExt->TargetingWarhead.isset())
 			{
 				const auto pSecondTargetingWH = pSecondExt->TargetingWarhead.Get();
-				const double vs = GeneralUtils::GetWarheadVersusArmor(pSecondTargetingWH, pTargetTechno);
+				const double vs = GeneralUtils::GetWarheadVersusArmor(pSecondTargetingWH, pTargetTechno, pTargetTechno->GetTechnoType());
 
 				if (vs == 0.0)
 					return weaponIndexOne; // второе не может навестись, берем первое
@@ -131,8 +131,8 @@ int TechnoExt::PickWeaponIndex(TechnoClass* pThis, TechnoClass* pTargetTechno, A
 			if (pFirstExt->TargetingWarhead.isset())
 			{
 				const auto pFirstTargetingWH = pFirstExt->TargetingWarhead.Get();
-				const double vs = GeneralUtils::GetWarheadVersusArmor(pFirstTargetingWH, pTargetTechno);
-
+				const double vs = GeneralUtils::GetWarheadVersusArmor(pFirstTargetingWH, pTargetTechno, pTargetTechno->GetTechnoType());
+				
 				if (vs == 0.0)
 					return weaponIndexTwo; // первое не может навестись, переключаемся на второе!
 			}
