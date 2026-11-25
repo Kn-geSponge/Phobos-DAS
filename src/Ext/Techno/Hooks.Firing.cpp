@@ -405,7 +405,7 @@ DEFINE_HOOK(0x6FC339, TechnoClass_CanFire, 0x6)
 		}
 	}
 
-	if (!pWeaponExt->TargetArmor.empty())
+	if (pWeaponExt->TargetArmor.isset())
 	{
 		// Если задано ограничение по броне, нельзя стрелять по клеткам земли/пустоте
 		if (!pTargetTechno)
@@ -421,20 +421,7 @@ DEFINE_HOOK(0x6FC339, TechnoClass_CanFire, 0x6)
 			}
 		}
 
-		// Проверяем, есть ли броня цели в списке разрешённых (сравниваем через явный int)
-		const int targetArmorInt = static_cast<int>(targetArmor);
-		bool armorFound = false;
-
-		for (const auto& allowedArmor : pWeaponExt->TargetArmor)
-		{
-			if (static_cast<int>(allowedArmor) == targetArmorInt)
-			{
-				armorFound = true;
-				break;
-			}
-		}
-
-		if (!armorFound)
+		if (static_cast<int>(targetArmor) != static_cast<int>(pWeaponExt->TargetArmor.Get()))
 			return CannotFire;
 	}
 

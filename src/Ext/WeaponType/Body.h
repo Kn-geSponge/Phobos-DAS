@@ -41,7 +41,9 @@ public:
 	Nullable<bool> Strafing_UseAmmoPerShot;
 	Nullable<bool> Strafing_TargetCell;
 	Nullable<int> Strafing_EndDelay;
-	ValueableVector<ArmorType> TargetArmor;
+
+	Nullable<ArmorType> TargetArmor;
+	
 	Valueable<AffectedTarget> CanTarget;
 	Valueable<AffectedHouse> CanTargetHouses;
 	Valueable<double> CanTarget_MaxHealth;

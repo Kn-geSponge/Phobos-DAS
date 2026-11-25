@@ -228,7 +228,7 @@ void WeaponTypeExt::LoadFromINIFile(CCINIClass* const pINI)
 		|| this->CanTargetVeterancy != AffectedVeterancy::All
 		|| this->AttachEffect_RequiredTypes.size() || this->AttachEffect_RequiredGroups.size()
 		|| this->AttachEffect_DisallowedTypes.size() || this->AttachEffect_DisallowedGroups.size()
-		|| this->TargetArmor.size()
+		|| this->TargetArmor.isset()
 		|| !this->CanTarget_DriverKilled)
 	{
 		this->SkipWeaponPicking = false;
