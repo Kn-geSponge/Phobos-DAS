@@ -425,6 +425,34 @@ DEFINE_HOOK(0x6FC339, TechnoClass_CanFire, 0x6)
 			return CannotFire;
 	}
 
+	if (pWeaponExt->TargetingWarhead.isset())
+	{
+		const auto pTargetingWH = pWeaponExt->TargetingWarhead.Get();
+
+		if (pTargetTechno)
+		{
+			// Если боеголовка таргетинга не наносит урон по этой цели (Verses == 0%)
+			if (GeneralUtils::GetWarheadVersusArmor(pTargetingWH, pTargetTechno) == 0.0)
+				return CannotFire;
+		}
+		else if (pTargetCell)
+		{
+			// Проверка препятствий на клетке (стены / лес / тиберий)
+			if (pTargetCell->OverlayTypeIndex != -1)
+			{
+				if (const auto pOverlay = OverlayTypeClass::Array.GetItem(pTargetCell->OverlayTypeIndex))
+				{
+					if (pOverlay->Wall && !pTargetingWH->Wall)
+						return CannotFire;
+					if (pOverlay->Wood && !pTargetingWH->Wood)
+						return CannotFire;
+					if (pOverlay->Tiberium && !pTargetingWH->Tiberium)
+						return CannotFire;
+				}
+			}
+		}
+	}
+
 	if (pTargetTechno)
 	{
 		if (pTargetTechno->IsIronCurtained()

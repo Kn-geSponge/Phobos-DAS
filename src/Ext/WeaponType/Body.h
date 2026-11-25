@@ -43,6 +43,7 @@ public:
 	Nullable<int> Strafing_EndDelay;
 
 	Nullable<ArmorType> TargetArmor;
+	Nullable<WarheadTypeClass*> TargetingWarhead;
 	
 	Valueable<AffectedTarget> CanTarget;
 	Valueable<AffectedHouse> CanTargetHouses;

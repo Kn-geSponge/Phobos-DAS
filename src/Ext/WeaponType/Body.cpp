@@ -110,7 +110,10 @@ void WeaponTypeExt::LoadFromINIFile(CCINIClass* const pINI)
 	this->Strafing_UseAmmoPerShot.Read(exINI, pSection, "Strafing.UseAmmoPerShot");
 	this->Strafing_TargetCell.Read(exINI, pSection, "Strafing.TargetCell");
 	this->Strafing_EndDelay.Read(exINI, pSection, "Strafing.EndDelay");
+
 	this->TargetArmor.Read(exINI, pSection, "TargetArmor");
+	this->TargetingWarhead.Read(exINI, pSection, "TargetingWarhead");
+
 	this->CanTarget.Read(exINI, pSection, "CanTarget");
 	this->CanTargetHouses.Read(exINI, pSection, "CanTargetHouses");
 	this->CanTarget_MaxHealth.Read(exINI, pSection, "CanTarget.MaxHealth");
@@ -229,6 +232,7 @@ void WeaponTypeExt::LoadFromINIFile(CCINIClass* const pINI)
 		|| this->AttachEffect_RequiredTypes.size() || this->AttachEffect_RequiredGroups.size()
 		|| this->AttachEffect_DisallowedTypes.size() || this->AttachEffect_DisallowedGroups.size()
 		|| this->TargetArmor.isset()
+		|| this->TargetingWarhead.isset()
 		|| !this->CanTarget_DriverKilled)
 	{
 		this->SkipWeaponPicking = false;
@@ -257,7 +261,10 @@ void WeaponTypeExt::Serialize(T& Stm)
 		.Process(this->Strafing_Shots)
 		.Process(this->Strafing_SimulateBurst)
 		.Process(this->Strafing_UseAmmoPerShot)
+		
+		.Process(this->TargetingWarhead)
 		.Process(this->TargetArmor)
+
 		.Process(this->Strafing_TargetCell)
 		.Process(this->Strafing_EndDelay)
 		.Process(this->CanTarget)
