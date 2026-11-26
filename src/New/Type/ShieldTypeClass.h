@@ -30,6 +30,8 @@ public:
 	Valueable<int> SelfHealing_RestartInCombatDelay;
 	ValueableVector<BuildingTypeClass*> SelfHealing_EnabledBy;
 
+	Valueable<int> Duration;
+
 	Valueable<bool> AbsorbOverDamage;
 	Valueable<int> BracketDelta;
 	Valueable<AttachedAnimFlag> IdleAnim_OfflineAction;
@@ -115,6 +117,7 @@ public:
 		, ImmuneToBerserk { false }
 		, ImmuneToCrit { false }
 		, Tint {}
+		, Duration { -1 }
 	{ };
 
 	void LoadFromINI(CCINIClass* pINI);

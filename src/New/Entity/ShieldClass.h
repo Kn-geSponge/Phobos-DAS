@@ -186,6 +186,7 @@ private:
 			, Respawn_CombatRestart { }
 			, Respawn { }
 			, Respawn_WHModifier { }
+			, Duration { } // <-- ДОБАВИТЬ СЮДА
 		{ }
 
 		CDTimerClass SelfHealing_CombatRestart;
@@ -194,6 +195,7 @@ private:
 		CDTimerClass Respawn_CombatRestart;
 		CDTimerClass Respawn;
 		CDTimerClass Respawn_WHModifier;
+		CDTimerClass Duration;
 
 	} Timers;
 };

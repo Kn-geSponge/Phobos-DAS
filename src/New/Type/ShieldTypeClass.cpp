@@ -49,6 +49,9 @@ void ShieldTypeClass::LoadFromINI(CCINIClass* pINI)
 	this->SelfHealing_EnabledBy.Read(exINI, pSection, "SelfHealing.EnabledBy");
 
 	this->AbsorbOverDamage.Read(exINI, pSection, "AbsorbOverDamage");
+
+	this->Duration.Read(exINI, pSection, "Duration"); // <-- ДОБАВИТЬ ЭТУ СТРОКУ
+
 	this->BracketDelta.Read(exINI, pSection, "BracketDelta");
 	this->ReceivedDamage_Minimum.Read(exINI, pSection, "ReceivedDamage.Minimum");
 	this->ReceivedDamage_Maximum.Read(exINI, pSection, "ReceivedDamage.Maximum");
@@ -116,6 +119,9 @@ void ShieldTypeClass::Serialize(T& Stm)
 		.Process(this->SelfHealing_RestartInCombat)
 		.Process(this->SelfHealing_RestartInCombatDelay)
 		.Process(this->SelfHealing_EnabledBy)
+		
+		.Process(this->Duration)
+
 		.Process(this->AbsorbOverDamage)
 		.Process(this->BracketDelta)
 		.Process(this->ReceivedDamage_Minimum)

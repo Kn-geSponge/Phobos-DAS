@@ -33,6 +33,9 @@ ShieldClass::ShieldClass(TechnoClass* pTechno, bool isAttached)
 	this->SetHP(pType->InitialStrength.Get(pType->Strength));
 	this->TechnoID = pTechno->GetTechnoType();
 
+	if (pType->Duration >= 0)
+		this->Timers.Duration.Start(pType->Duration);
+
 	if (pTechno->AbstractFlags & AbstractFlags::Foot)
 		this->BracketDelta = this->TechnoID->PixelSelectionBracketDelta + pType->BracketDelta - 3;
 
@@ -90,13 +93,16 @@ bool ShieldClass::Serialize(T& Stm)
 		.Process(this->Timers.Respawn_CombatRestart)
 		.Process(this->Timers.Respawn)
 		.Process(this->Timers.Respawn_WHModifier)
+
+		.Process(this->Timers.Duration) // <-- Добавь эту строчку сюда
+		
 		.Process(this->HP)
 		.Process(this->Cloak)
 		.Process(this->Online)
 		.Process(this->Temporal)
 		.Process(this->Attached)
 		.Process(this->AreAnimsHidden)
-		.Process(this->Type)
+		.Process(this->Type)		
 		.Process(this->SelfHealing_Warhead)
 		.Process(this->SelfHealing_Rate_Warhead)
 		.Process(this->SelfHealing_RestartInCombat_Warhead)
@@ -463,7 +469,16 @@ void ShieldClass::AI()
 		this->SelfHealing();
 	}
 
+		// === ДОБАВЛЯЕМ СЮДА ПРОВЕРКУ ОКОНЧАНИЯ ВРЕМЕНИ ===
 	auto const pType = this->Type;
+	if (this->HP > 0 && pType->Duration >= 0)
+	{
+		if (this->Timers.Duration.Completed())
+		{
+			this->BreakShield(pType->BreakAnim, pType->BreakWeapon.Get(nullptr));
+		}
+	}
+	// ===============================================
 
 	// there're 2 cases to trigger the idle anim update: the techno's own/shield hp change
 	// the former one will only take effect when IdleAnimDamaged is set
@@ -868,6 +883,8 @@ void ShieldClass::RespawnShield()
 
 	const auto timerCombatRestart = &this->Timers.Respawn_CombatRestart;
 
+	
+
 	if (timerCombatRestart->InProgress())
 		return;
 
@@ -925,6 +942,7 @@ void ShieldClass::RespawnShield()
 				TechnoExt::FireWeaponAtSelf(pTechno, pWeapon);
 		}
 	}
+
 }
 
 void ShieldClass::SetRespawn(int duration, double amount, int rate, bool restartInCombat, int restartInCombatDelay, bool resetTimer, std::vector<AnimTypeClass*> anim, WeaponTypeClass* weapon)
